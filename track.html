@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Your Grievance – RDA AIIMS Bhopal</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --teal: #0d9488;
+    --teal-light: #f0fdfa;
+    --amber: #d97706;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #e8f0fe 0%, #f0fdfa 50%, #fef3c7 100%);
+    min-height: 100vh; color: var(--gray-800);
+  }
+
+  .header {
+    background: var(--navy); color: white;
+    text-align: center; padding: 40px 24px 50px;
+    position: relative; overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute; top: -60px; right: -80px;
+    width: 300px; height: 300px; background: rgba(37,99,235,0.2); border-radius: 50%;
+  }
+  .header::after {
+    content: ''; position: absolute; bottom: -80px; left: -60px;
+    width: 250px; height: 250px; background: rgba(13,148,136,0.15); border-radius: 50%;
+  }
+  .header-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .org-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px; padding: 6px 18px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    margin-bottom: 20px; color: #bfdbfe;
+  }
+  .header h1 {
+    font-family: 'Lora', serif; font-size: clamp(22px, 4vw, 32px);
+    font-weight: 600; line-height: 1.25; margin-bottom: 12px;
+  }
+  .header h1 span { color: #93c5fd; }
+  .header p { font-size: 15px; color: #cbd5e1; line-height: 1.7; }
+  .header-links { margin-top: 16px; }
+  .header-links a {
+    color: #93c5fd; font-size: 13px; text-decoration: none;
+    border: 1px solid rgba(147,197,253,0.3); border-radius: 8px;
+    padding: 6px 14px; transition: all 0.2s;
+  }
+  .header-links a:hover { background: rgba(255,255,255,0.1); }
+
+  .wave { background: var(--navy); line-height: 0; }
+  .wave svg { display: block; }
+
+  .container { max-width: 620px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  .search-card {
+    background: white; border-radius: 16px; padding: 36px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06); border: 1px solid var(--gray-100);
+    text-align: center;
+  }
+  .search-icon { font-size: 40px; margin-bottom: 16px; }
+  .search-card h2 {
+    font-family: 'Lora', serif; font-size: 22px;
+    color: var(--navy); margin-bottom: 8px;
+  }
+  .search-card p {
+    font-size: 14px; color: var(--gray-600); margin-bottom: 24px; line-height: 1.6;
+  }
+
+  .search-input-wrap {
+    display: flex; gap: 10px; max-width: 440px; margin: 0 auto;
+  }
+  .search-input {
+    flex: 1; padding: 12px 16px;
+    border: 1.5px solid var(--gray-200); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    color: var(--gray-800); background: var(--gray-50); outline: none;
+    letter-spacing: 0.5px;
+  }
+  .search-input:focus {
+    border-color: var(--blue); background: white;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  .search-btn {
+    background: var(--navy); color: white; border: none;
+    border-radius: 10px; padding: 12px 24px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .search-btn:hover { background: #243460; }
+  @media (max-width: 480px) {
+    .search-input-wrap { flex-direction: column; }
+  }
+
+  /* Result card */
+  .result-card {
+    display: none; margin-top: 24px; text-align: left;
+    border-radius: 12px; padding: 24px;
+  }
+  .result-card.found {
+    display: block; background: var(--green-light); border: 1.5px solid #86efac;
+  }
+  .result-card.not-found {
+    display: block; background: var(--red-light); border: 1.5px solid #fca5a5;
+  }
+
+  .result-card h3 {
+    font-size: 16px; margin-bottom: 12px;
+  }
+  .result-card.found h3 { color: var(--green); }
+  .result-card.not-found h3 { color: var(--red); }
+
+  .result-detail {
+    display: flex; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 14px;
+  }
+  .result-detail:last-child { border-bottom: none; }
+  .result-label { color: var(--gray-600); font-weight: 500; }
+  .result-value { color: var(--gray-800); text-align: right; }
+
+  .status-badge {
+    display: inline-block; padding: 4px 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    background: #dbeafe; color: var(--blue);
+  }
+
+  .result-card p {
+    font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-top: 12px;
+  }
+  .result-card a { color: var(--blue); text-decoration: none; }
+
+  /* Recent submissions */
+  .recent-section {
+    margin-top: 32px; background: white; border-radius: 16px;
+    padding: 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    border: 1px solid var(--gray-100);
+  }
+  .recent-section h3 {
+    font-size: 16px; color: var(--navy); margin-bottom: 16px;
+    font-family: 'Lora', serif;
+  }
+  .recent-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--gray-100);
+    font-size: 14px; cursor: pointer; transition: background 0.15s;
+    border-radius: 6px; padding: 10px 8px;
+  }
+  .recent-item:hover { background: var(--gray-50); }
+  .recent-item:last-child { border-bottom: none; }
+  .recent-ref { font-weight: 600; color: var(--navy); font-family: monospace; }
+  .recent-date { color: var(--gray-400); font-size: 13px; }
+  .no-recent { font-size: 14px; color: var(--gray-400); text-align: center; padding: 20px; }
+
+  .conf-bar {
+    background: white; border-radius: 12px; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; color: var(--gray-600); margin-top: 24px;
+    border: 1px solid var(--gray-200); text-align: center; flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="org-badge"><span>🏥</span> RDA · AIIMS Bhopal</div>
+    <h1>Track Your <span>Grievance</span></h1>
+    <p>Enter your reference number to check the status of your submission</p>
+    <div class="header-links">
+      <a href="index.html.html">Submit New Grievance</a>
+    </div>
+  </div>
+</div>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="40">
+    <path d="M0,40 C360,0 1080,0 1440,40 L1440,0 L0,0 Z" fill="#1a2744"/>
+  </svg>
+</div>
+
+<div class="container">
+  <div class="search-card">
+    <div class="search-icon">🔍</div>
+    <h2>Find Your Grievance</h2>
+    <p>Enter the reference number you received after submission (e.g. RDA-2603-19143527)</p>
+
+    <div class="search-input-wrap">
+      <input type="text" class="search-input" id="refInput" placeholder="RDA-XXXX-XXXXXXXX"
+        oninput="this.value = this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter') lookupRef()">
+      <button class="search-btn" onclick="lookupRef()">Track</button>
+    </div>
+
+    <div class="result-card" id="resultCard"></div>
+  </div>
+
+  <div class="recent-section" id="recentSection">
+    <h3>Your Recent Submissions</h3>
+    <div id="recentList"></div>
+  </div>
+
+  <div class="conf-bar">
+    🔒 All submissions are handled with strict confidentiality · RDA, AIIMS Bhopal
+  </div>
+</div>
+
+<script>
+  function getSubmissions() {
+    try {
+      return JSON.parse(localStorage.getItem('rda_submissions') || '[]');
+    } catch { return []; }
+  }
+
+  function formatDate(isoStr) {
+    const d = new Date(isoStr);
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function lookupRef() {
+    const input = document.getElementById('refInput').value.trim().toUpperCase();
+    const card = document.getElementById('resultCard');
+
+    if (!input) {
+      card.className = 'result-card not-found';
+      card.innerHTML = '<h3>Please enter a reference number</h3>';
+      return;
+    }
+
+    const submissions = getSubmissions();
+    const match = submissions.find(s => s.refNum === input);
+
+    if (match) {
+      const cats = match.categories && match.categories.length > 0
+        ? match.categories.join(', ')
+        : 'Not specified';
+
+      card.className = 'result-card found';
+      card.innerHTML = `
+        <h3>Grievance Found</h3>
+        <div class="result-detail">
+          <span class="result-label">Reference</span>
+          <span class="result-value" style="font-family:monospace;font-weight:600;">${match.refNum}</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-label">Submitted</span>
+          <span class="result-value">${formatDate(match.date)}</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-label">Categories</span>
+          <span class="result-value">${cats}</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-label">Urgency</span>
+          <span class="result-value">${match.urgency}</span>
+        </div>
+        <div class="result-detail">
+          <span class="result-label">Status</span>
+          <span class="result-value"><span class="status-badge">Under Review</span></span>
+        </div>
+        <p>
+          The RDA team acknowledges grievances within 48 hours of submission.
+          ${match.email && match.email !== 'Anonymous'
+            ? 'Updates will be sent to your email.'
+            : 'For updates, please contact <a href="mailto:rdaaiimsb@gmail.com">rdaaiimsb@gmail.com</a> with your reference number.'}
+        </p>
+      `;
+    } else {
+      card.className = 'result-card not-found';
+      card.innerHTML = `
+        <h3>Reference Not Found</h3>
+        <p>
+          We could not find <strong>${input}</strong> in this browser's records.
+          This may happen if you submitted from a different device or browser.<br><br>
+          Please email <a href="mailto:rdaaiimsb@gmail.com">rdaaiimsb@gmail.com</a>
+          with your reference number for status updates.
+        </p>
+      `;
+    }
+  }
+
+  // Load recent submissions
+  function loadRecent() {
+    const submissions = getSubmissions();
+    const list = document.getElementById('recentList');
+    const section = document.getElementById('recentSection');
+
+    if (submissions.length === 0) {
+      list.innerHTML = '<div class="no-recent">No submissions found from this browser</div>';
+      return;
+    }
+
+    const sorted = [...submissions].reverse().slice(0, 10);
+    list.innerHTML = sorted.map(s => `
+      <div class="recent-item" onclick="document.getElementById('refInput').value='${s.refNum}';lookupRef();">
+        <span class="recent-ref">${s.refNum}</span>
+        <span class="recent-date">${formatDate(s.date)}</span>
+      </div>
+    `).join('');
+  }
+
+  loadRecent();
+</script>
+</body>
+</html>

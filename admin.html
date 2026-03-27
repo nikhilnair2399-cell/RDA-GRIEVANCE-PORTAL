@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel – RDA Grievance Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --teal: #0d9488;
+    --teal-light: #f0fdfa;
+    --amber: #d97706;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #e8f0fe 0%, #f0fdfa 50%, #fef3c7 100%);
+    min-height: 100vh; color: var(--gray-800);
+  }
+
+  .header {
+    background: var(--navy); color: white;
+    text-align: center; padding: 32px 24px 44px;
+    position: relative; overflow: hidden;
+  }
+  .header::before {
+    content: ''; position: absolute; top: -60px; right: -80px;
+    width: 300px; height: 300px; background: rgba(37,99,235,0.2); border-radius: 50%;
+  }
+  .header-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .admin-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(220,38,38,0.2); border: 1px solid rgba(220,38,38,0.3);
+    border-radius: 999px; padding: 5px 14px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.8px;
+    color: #fca5a5; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Lora', serif; font-size: clamp(22px, 4vw, 30px);
+    font-weight: 600; margin-bottom: 8px;
+  }
+  .header p { font-size: 14px; color: #cbd5e1; }
+
+  .wave { background: var(--navy); line-height: 0; }
+  .wave svg { display: block; }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .card {
+    background: white; border-radius: 16px; padding: 28px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    border: 1px solid var(--gray-100); margin-bottom: 24px;
+  }
+  .card-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: 2px solid var(--gray-100);
+  }
+  .card-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .card-icon.blue { background: var(--blue-light); }
+  .card-icon.teal { background: var(--teal-light); }
+  .card-icon.amber { background: #fffbeb; }
+  .card-title { font-size: 17px; font-weight: 600; color: var(--navy); }
+  .card-subtitle { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
+
+  /* Reply composer */
+  .field-group { margin-bottom: 16px; }
+  label {
+    display: block; font-size: 14px; font-weight: 500;
+    color: var(--gray-800); margin-bottom: 6px;
+  }
+  input[type="text"], input[type="email"], select, textarea {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--gray-200); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 14.5px;
+    color: var(--gray-800); background: var(--gray-50);
+    outline: none; transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue); background: white;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  textarea { resize: vertical; line-height: 1.6; }
+  select { cursor: pointer; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+  .preview-box {
+    background: var(--gray-50); border: 1.5px solid var(--gray-200);
+    border-radius: 12px; padding: 20px; margin-top: 16px;
+    display: none;
+  }
+  .preview-box.visible { display: block; }
+  .preview-label {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--teal); margin-bottom: 8px;
+  }
+  .preview-subject { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .preview-body {
+    font-size: 14px; color: var(--gray-600); line-height: 1.8;
+    white-space: pre-wrap; font-family: 'DM Sans', sans-serif;
+  }
+
+  .compose-btn {
+    background: var(--navy); color: white; border: none;
+    border-radius: 10px; padding: 12px 28px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .compose-btn:hover { background: #243460; transform: translateY(-1px); }
+  .copy-body-btn {
+    background: white; color: var(--navy); border: 1.5px solid var(--gray-200);
+    border-radius: 10px; padding: 12px 28px;
+    font-size: 15px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+    margin-top: 8px; margin-left: 8px;
+  }
+  .copy-body-btn:hover { border-color: var(--navy); background: var(--gray-50); }
+
+  /* Template library */
+  .template-item {
+    border: 1.5px solid var(--gray-200); border-radius: 12px;
+    padding: 16px; margin-bottom: 12px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .template-item:hover { border-color: var(--blue); background: var(--blue-light); }
+  .template-item.active { border-color: var(--teal); background: var(--teal-light); }
+  .template-name { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .template-desc { font-size: 13px; color: var(--gray-600); }
+  .template-tag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 6px; margin-top: 6px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .tag-ack { background: #dbeafe; color: var(--blue); }
+  .tag-info { background: #fef3c7; color: var(--amber); }
+  .tag-update { background: var(--teal-light); color: var(--teal); }
+  .tag-resolve { background: var(--green-light); color: var(--green); }
+  .tag-close { background: var(--gray-100); color: var(--gray-600); }
+  .tag-referral { background: var(--red-light); color: var(--red); }
+
+  /* Quick reference */
+  .ref-item {
+    padding: 12px 0; border-bottom: 1px solid var(--gray-100);
+    font-size: 14px; line-height: 1.7;
+  }
+  .ref-item:last-child { border-bottom: none; }
+  .ref-item strong { color: var(--navy); }
+  .ref-item code {
+    background: var(--gray-100); padding: 2px 6px; border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .conf-bar {
+    background: white; border-radius: 12px; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; color: var(--gray-600); margin-top: 16px;
+    border: 1px solid var(--gray-200); text-align: center; flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="admin-badge">RDA Committee Only</div>
+    <h1>Grievance Admin Panel</h1>
+    <p>Reply to grievances, manage templates, and track resolutions</p>
+  </div>
+</div>
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="40">
+    <path d="M0,40 C360,0 1080,0 1440,40 L1440,0 L0,0 Z" fill="#1a2744"/>
+  </svg>
+</div>
+
+<div class="container">
+
+  <!-- REPLY COMPOSER -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon blue">✉️</div>
+      <div>
+        <div class="card-title">Compose Reply</div>
+        <div class="card-subtitle">Send a structured response to a grievant</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label for="grievantEmail">Grievant's Email</label>
+        <input type="email" id="grievantEmail" placeholder="resident@aiimsbhopal.edu.in">
+      </div>
+      <div class="field-group">
+        <label for="refNumber">Reference Number</label>
+        <input type="text" id="refNumber" placeholder="RDA-2603-19143527"
+          oninput="this.value = this.value.toUpperCase()">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="templateSelect">Reply Template</label>
+      <select id="templateSelect" onchange="selectTemplate()">
+        <option value="">Choose a template...</option>
+        <option value="ack">Acknowledgment (within 48 hrs)</option>
+        <option value="info">Request for Information</option>
+        <option value="update">Status Update</option>
+        <option value="resolve">Resolution Notification</option>
+        <option value="close">Closure Confirmation</option>
+        <option value="icc">ICC / Higher Authority Referral</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="replyBody">Reply Message</label>
+      <textarea id="replyBody" rows="10" placeholder="Select a template or type your message..."></textarea>
+    </div>
+
+    <div class="preview-box" id="previewBox">
+      <div class="preview-label">Email Preview</div>
+      <div class="preview-subject" id="previewSubject"></div>
+      <div class="preview-body" id="previewBody"></div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <button class="compose-btn" onclick="composeReply()">Open in Email Client</button>
+      <button class="copy-body-btn" onclick="copyReplyBody()">Copy Message</button>
+    </div>
+  </div>
+
+  <!-- TEMPLATE LIBRARY -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon teal">📋</div>
+      <div>
+        <div class="card-title">Template Library</div>
+        <div class="card-subtitle">Click any template to load it into the composer</div>
+      </div>
+    </div>
+
+    <div class="template-item" onclick="loadTemplate('ack')">
+      <div class="template-name">Acknowledgment</div>
+      <div class="template-desc">Confirm receipt of grievance within 48 hours</div>
+      <span class="template-tag tag-ack">Initial Response</span>
+    </div>
+
+    <div class="template-item" onclick="loadTemplate('info')">
+      <div class="template-name">Request for Information</div>
+      <div class="template-desc">Ask the grievant for additional details or evidence</div>
+      <span class="template-tag tag-info">Follow-up</span>
+    </div>
+
+    <div class="template-item" onclick="loadTemplate('update')">
+      <div class="template-name">Status Update</div>
+      <div class="template-desc">Inform the grievant about investigation progress</div>
+      <span class="template-tag tag-update">In Progress</span>
+    </div>
+
+    <div class="template-item" onclick="loadTemplate('resolve')">
+      <div class="template-name">Resolution Notification</div>
+      <div class="template-desc">Communicate the resolution or action taken</div>
+      <span class="template-tag tag-resolve">Resolution</span>
+    </div>
+
+    <div class="template-item" onclick="loadTemplate('close')">
+      <div class="template-name">Closure Confirmation</div>
+      <div class="template-desc">Formally close the grievance with summary</div>
+      <span class="template-tag tag-close">Closed</span>
+    </div>
+
+    <div class="template-item" onclick="loadTemplate('icc')">
+      <div class="template-name">ICC / Higher Authority Referral</div>
+      <div class="template-desc">Inform the grievant their case has been escalated</div>
+      <span class="template-tag tag-referral">Escalation</span>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon amber">📖</div>
+      <div>
+        <div class="card-title">Quick Reference</div>
+        <div class="card-subtitle">How the grievance system works</div>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <strong>How submissions arrive:</strong> Grievances are submitted via Formspree and delivered to <code>rdaaiimsb@gmail.com</code>. Each email has a reference number in the subject line (e.g. <code>[RDA-2603-19143527]</code>).
+    </div>
+
+    <div class="ref-item">
+      <strong>Replying to grievants:</strong> Simply hit "Reply" on the Formspree notification email — the <code>Reply-To</code> header is automatically set to the grievant's email. Alternatively, use the composer above with pre-formatted templates.
+    </div>
+
+    <div class="ref-item">
+      <strong>Anonymous submissions:</strong> If the grievant chose to remain anonymous, no email or personal info is included. You can only communicate updates through phone (if provided) or via the portal's tracking page.
+    </div>
+
+    <div class="ref-item">
+      <strong>Urgency levels:</strong>
+      🔴 <strong>Immediate</strong> — respond within 24 hours.
+      🟡 <strong>High Priority</strong> — respond within 3 days.
+      🟢 <strong>Routine</strong> — respond within 7–14 days.
+    </div>
+
+    <div class="ref-item">
+      <strong>Supporting documents:</strong> Grievants are instructed to email documents separately to <code>rdaaiimsb@gmail.com</code> with their reference number. Check the inbox for attachments matching the reference.
+    </div>
+
+    <div class="ref-item">
+      <strong>Escalation protocol:</strong> If a grievance involves harassment, discrimination, or requires institutional action, refer to ICC or the relevant authority. Use the "ICC Referral" template to notify the grievant.
+    </div>
+  </div>
+
+  <div class="conf-bar">
+    🔒 For RDA Committee Members Only · Handle all grievance data with strict confidentiality
+  </div>
+
+</div>
+
+<script>
+  const templates = {
+    ack: {
+      subject: 'Re: [REF] Your Grievance Has Been Received – RDA AIIMS Bhopal',
+      body: `Dear Colleague,
+
+Thank you for reaching out to the Resident Doctors' Association. We have received your grievance (Reference: REF) and want you to know that your concerns are being taken seriously.
+
+Our committee will review your submission and begin looking into the matter. You can expect a detailed update within the timeline indicated by your urgency selection.
+
+In the meantime, if you have any additional information or documents to share, please reply to this email or send them to rdaaiimsb@gmail.com with your reference number.
+
+You are not alone in this — we are here to support you.
+
+Warm regards,
+RDA Grievance Committee
+AIIMS Bhopal`
+    },
+    info: {
+      subject: 'Re: [REF] Additional Information Needed – RDA AIIMS Bhopal',
+      body: `Dear Colleague,
+
+Thank you for your grievance submission (Reference: REF). We have reviewed your initial report and are actively looking into your concerns.
+
+To help us investigate effectively and take appropriate action, we would appreciate if you could provide the following additional details:
+
+1. [Specify what additional information is needed]
+2. [Any documents, dates, or names that could help]
+3. [Any other relevant context]
+
+Please reply to this email with the requested information at your earliest convenience. Your response will remain strictly confidential.
+
+Warm regards,
+RDA Grievance Committee
+AIIMS Bhopal`
+    },
+    update: {
+      subject: 'Re: [REF] Status Update on Your Grievance – RDA AIIMS Bhopal',
+      body: `Dear Colleague,
+
+We are writing to update you on the status of your grievance (Reference: REF).
+
+Current Status: Under Investigation
+
+Summary of actions taken so far:
+- [Describe action 1]
+- [Describe action 2]
+- [Any meetings held or stakeholders consulted]
+
+Next Steps:
+- [What will happen next]
+- [Expected timeline for resolution]
+
+We understand this matter is important to you and want to assure you that we are working diligently toward a fair resolution. Please do not hesitate to reach out if you have any questions or new information to share.
+
+Warm regards,
+RDA Grievance Committee
+AIIMS Bhopal`
+    },
+    resolve: {
+      subject: 'Re: [REF] Resolution of Your Grievance – RDA AIIMS Bhopal',
+      body: `Dear Colleague,
+
+We are pleased to inform you about the resolution of your grievance (Reference: REF).
+
+Resolution Summary:
+[Describe the resolution and actions taken]
+
+Actions Implemented:
+- [Action 1]
+- [Action 2]
+- [Any policy changes or corrective measures]
+
+We hope this resolution addresses your concerns satisfactorily. If you feel the matter has not been adequately resolved, or if you experience any recurrence, please do not hesitate to reach out to us again.
+
+Your courage in raising this issue has helped us improve the working environment for all residents. Thank you for trusting the RDA.
+
+Warm regards,
+RDA Grievance Committee
+AIIMS Bhopal`
+    },
+    close: {
+      subject: 'Re: [REF] Grievance Closed – RDA AIIMS Bhopal',
+      body: `Dear Colleague,
+
+This is to formally confirm that your grievance (Reference: REF) has been closed.
+
+Summary:
+- Date Submitted: [Date]
+- Category: [Category]
+- Resolution: [Brief resolution summary]
+- Date Closed: [Today's date]
+
+This case is now marked as resolved in our records. Should you wish to reopen this matter or raise any new concerns, you are always welcome to submit a new grievance through the portal or contact us directly.
+
+Thank you for working with us toward a better environment for all residents.
+
+Warm regards,
+RDA Grievance Committee
+AIIMS Bhopal`
+    },
+    icc: {
+      subject: 'Re: [REF] Referral to Higher Authority – RDA AIIMS Bhopal',
+      body: `Dear Colleague,
+
+After careful review of your grievance (Reference: REF), we have determined that this matter requires attention from [the Internal Complaints Committee (ICC) / the relevant institutional authority].
+
+This referral has been made because:
+- [Reason for escalation]
+- [Why RDA alone cannot resolve this]
+
+What this means for you:
+- Your complaint has been formally forwarded to [Authority Name]
+- You may be contacted by their office for further discussion
+- The RDA will continue to support you throughout this process
+- Strict confidentiality will be maintained at all levels
+
+Please know that this escalation is a positive step — it means your concern is being directed to the body best equipped to take action. The RDA stands with you and will advocate on your behalf.
+
+If you have any questions or concerns about this referral, please reach out to us immediately.
+
+Warm regards,
+RDA Grievance Committee
+AIIMS Bhopal`
+    }
+  };
+
+  function selectTemplate() {
+    const key = document.getElementById('templateSelect').value;
+    if (key) loadTemplate(key);
+  }
+
+  function loadTemplate(key) {
+    const tpl = templates[key];
+    if (!tpl) return;
+
+    document.getElementById('templateSelect').value = key;
+    const ref = document.getElementById('refNumber').value || 'REF';
+    document.getElementById('replyBody').value = tpl.body.replace(/REF/g, ref);
+
+    // Highlight active template
+    document.querySelectorAll('.template-item').forEach(el => el.classList.remove('active'));
+    const items = document.querySelectorAll('.template-item');
+    const keys = ['ack','info','update','resolve','close','icc'];
+    const idx = keys.indexOf(key);
+    if (idx >= 0 && items[idx]) items[idx].classList.add('active');
+
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const ref = document.getElementById('refNumber').value || 'REF';
+    const key = document.getElementById('templateSelect').value;
+    const body = document.getElementById('replyBody').value;
+    const preview = document.getElementById('previewBox');
+
+    if (!body.trim()) {
+      preview.classList.remove('visible');
+      return;
+    }
+
+    const tpl = templates[key];
+    const subject = tpl
+      ? tpl.subject.replace(/REF/g, ref)
+      : `Re: [${ref}] Your Grievance Update – RDA AIIMS Bhopal`;
+
+    document.getElementById('previewSubject').textContent = subject;
+    document.getElementById('previewBody').textContent = body.replace(/REF/g, ref);
+    preview.classList.add('visible');
+  }
+
+  // Update preview on typing
+  document.getElementById('replyBody').addEventListener('input', updatePreview);
+  document.getElementById('refNumber').addEventListener('input', () => {
+    const key = document.getElementById('templateSelect').value;
+    if (key) loadTemplate(key);
+  });
+
+  function composeReply() {
+    const email = document.getElementById('grievantEmail').value.trim();
+    const ref = document.getElementById('refNumber').value || 'REF';
+    const key = document.getElementById('templateSelect').value;
+    const body = document.getElementById('replyBody').value.replace(/REF/g, ref);
+
+    if (!email) {
+      alert('Please enter the grievant\'s email address.');
+      return;
+    }
+
+    const tpl = templates[key];
+    const subject = tpl
+      ? tpl.subject.replace(/REF/g, ref)
+      : `Re: [${ref}] Your Grievance Update – RDA AIIMS Bhopal`;
+
+    const mailto = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  }
+
+  function copyReplyBody() {
+    const ref = document.getElementById('refNumber').value || 'REF';
+    const body = document.getElementById('replyBody').value.replace(/REF/g, ref);
+    navigator.clipboard.writeText(body).then(() => {
+      const btn = document.querySelector('.copy-body-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy Message'; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

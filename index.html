@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDA Grievance Portal – AIIMS Bhopal</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --teal: #0d9488;
+    --teal-light: #f0fdfa;
+    --amber: #d97706;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-600: #4b5563;
+    --gray-800: #1f2937;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #e8f0fe 0%, #f0fdfa 50%, #fef3c7 100%);
+    min-height: 100vh;
+    color: var(--gray-800);
+  }
+
+  /* Skip link */
+  .skip-link {
+    position: absolute; top: -40px; left: 0;
+    background: var(--navy); color: white; padding: 8px 16px;
+    z-index: 100; font-size: 14px; text-decoration: none;
+    border-radius: 0 0 8px 0;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* Progress bar */
+  .progress-bar {
+    position: sticky; top: 0; z-index: 50;
+    height: 4px; background: var(--gray-200);
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+    transition: width 0.3s ease;
+  }
+
+  /* Header */
+  .header {
+    background: var(--navy);
+    color: white;
+    text-align: center;
+    padding: 40px 24px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 300px; height: 300px;
+    background: rgba(37,99,235,0.2);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -60px;
+    width: 250px; height: 250px;
+    background: rgba(13,148,136,0.15);
+    border-radius: 50%;
+  }
+  .header-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .org-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px; padding: 6px 18px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    margin-bottom: 20px; color: #bfdbfe;
+  }
+  .header h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 600; line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .header h1 span { color: #93c5fd; }
+  .header-tagline {
+    font-size: 15px; color: #cbd5e1; line-height: 1.7;
+    max-width: 560px; margin: 0 auto 24px;
+  }
+  .header-assurance {
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  }
+  .assurance-chip {
+    background: rgba(255,255,255,0.1); border-radius: 8px;
+    padding: 8px 16px; font-size: 13px; color: #e2e8f0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .assurance-chip .icon { font-size: 15px; }
+  .header-links {
+    margin-top: 16px;
+  }
+  .header-links a {
+    color: #93c5fd; font-size: 13px; text-decoration: none;
+    border: 1px solid rgba(147,197,253,0.3); border-radius: 8px;
+    padding: 6px 14px; transition: all 0.2s;
+  }
+  .header-links a:hover { background: rgba(255,255,255,0.1); }
+
+  /* Wave divider */
+  .wave { background: var(--navy); line-height: 0; }
+  .wave svg { display: block; }
+
+  /* Main content */
+  .container { max-width: 760px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  /* Empathy note */
+  .empathy-box {
+    background: white; border-left: 4px solid var(--teal);
+    border-radius: 12px; padding: 24px 28px;
+    margin-bottom: 36px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .empathy-box p {
+    font-family: 'Lora', serif; font-style: italic;
+    font-size: 16px; line-height: 1.8; color: var(--gray-800);
+  }
+  .empathy-box p strong { font-style: normal; color: var(--teal); }
+
+  /* Section cards */
+  .section {
+    background: white; border-radius: 16px;
+    padding: 32px; margin-bottom: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    border: 1px solid var(--gray-100);
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px; padding-bottom: 16px;
+    border-bottom: 2px solid var(--gray-100);
+  }
+  .section-num {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--navy); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600; flex-shrink: 0;
+  }
+  .section-title { font-size: 18px; font-weight: 600; color: var(--navy); }
+  .section-subtitle { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
+
+  /* Form fields */
+  .field-group { margin-bottom: 20px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+  label {
+    display: block; font-size: 14px; font-weight: 500;
+    color: var(--gray-800); margin-bottom: 6px;
+  }
+  label .required { color: var(--red); margin-left: 2px; }
+  label .optional { color: var(--gray-400); font-weight: 400; font-size: 12px; }
+
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"],
+  select, textarea {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--gray-200); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 14.5px; color: var(--gray-800);
+    background: var(--gray-50); transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue); background: white;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  textarea { resize: vertical; line-height: 1.6; }
+  select { cursor: pointer; }
+
+  /* Validation error styles */
+  .field-error {
+    display: none; font-size: 12px; color: var(--red);
+    margin-top: 4px;
+  }
+  .field-error.visible { display: block; }
+  .input-error { border-color: var(--red) !important; }
+  .input-error:focus { box-shadow: 0 0 0 3px rgba(220,38,38,0.1) !important; }
+
+  /* Character counter */
+  .char-counter {
+    font-size: 12px; color: var(--gray-400); text-align: right; margin-top: 4px;
+  }
+  .char-counter.warn { color: var(--amber); }
+  .char-counter.limit { color: var(--red); }
+
+  /* Anonymous toggle */
+  .anon-card {
+    background: var(--blue-light); border: 1.5px solid #bfdbfe;
+    border-radius: 12px; padding: 16px 20px;
+    display: flex; align-items: flex-start; gap: 12px;
+    cursor: pointer; margin-bottom: 24px;
+  }
+  .anon-card input[type="checkbox"] { margin-top: 2px; accent-color: var(--blue); transform: scale(1.2); }
+  .anon-card-text strong { font-size: 14px; color: var(--navy); display: block; margin-bottom: 2px; }
+  .anon-card-text span { font-size: 13px; color: var(--gray-600); }
+
+  /* Category checkboxes */
+  .category-group { margin-bottom: 20px; }
+  .category-label {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--teal); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 480px) { .check-grid { grid-template-columns: 1fr; } }
+
+  .check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: 10px;
+    border: 1.5px solid var(--gray-200); background: var(--gray-50);
+    cursor: pointer; transition: all 0.15s; font-size: 14px;
+    min-height: 44px;
+  }
+  .check-item:hover { border-color: var(--blue); background: var(--blue-light); }
+  .check-item input[type="checkbox"] { accent-color: var(--blue); min-width: 18px; min-height: 18px; }
+
+  /* Radio urgency */
+  .urgency-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .urgency-options { grid-template-columns: 1fr; } }
+
+  .urgency-card {
+    border: 2px solid var(--gray-200); border-radius: 12px;
+    padding: 14px; text-align: center; cursor: pointer;
+    transition: all 0.2s; position: relative;
+  }
+  .urgency-card:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .urgency-card input { position: absolute; opacity: 0; }
+  .urgency-card:hover { border-color: var(--blue); }
+  .urgency-card.selected-immediate { border-color: var(--red); background: var(--red-light); }
+  .urgency-card.selected-high { border-color: var(--amber); background: #fffbeb; }
+  .urgency-card.selected-routine { border-color: var(--green); background: var(--green-light); }
+  .urgency-icon { font-size: 22px; margin-bottom: 6px; }
+  .urgency-title { font-size: 14px; font-weight: 600; color: var(--gray-800); }
+  .urgency-time { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+  /* Document info box (replaces broken file upload) */
+  .doc-info-box {
+    border: 2px dashed var(--gray-200); border-radius: 12px;
+    padding: 24px; text-align: center;
+    background: var(--gray-50);
+  }
+  .doc-info-box .doc-icon { font-size: 28px; margin-bottom: 8px; }
+  .doc-info-box .doc-text { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
+  .doc-info-box .doc-email {
+    display: inline-block; margin-top: 8px; padding: 6px 16px;
+    background: var(--blue-light); border-radius: 8px;
+    font-size: 14px; font-weight: 500; color: var(--blue);
+  }
+
+  /* Declaration box */
+  .decl-box {
+    background: var(--gray-50); border: 1.5px solid var(--gray-200);
+    border-radius: 12px; padding: 20px; margin-bottom: 20px;
+  }
+  .decl-box p {
+    font-size: 14px; line-height: 1.7; color: var(--gray-600);
+    font-family: 'Lora', serif; font-style: italic;
+  }
+  .decl-check {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-top: 16px;
+  }
+  .decl-check input { margin-top: 3px; accent-color: var(--navy); transform: scale(1.2); }
+  .decl-check label { font-size: 14px; font-weight: 500; margin: 0; }
+
+  /* Submit */
+  .submit-wrap { text-align: center; margin-top: 12px; }
+  .submit-btn {
+    background: var(--navy); color: white;
+    border: none; border-radius: 12px; cursor: pointer;
+    padding: 16px 52px; font-size: 16px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; letter-spacing: 0.3px;
+    box-shadow: 0 4px 16px rgba(26,39,68,0.3);
+  }
+  .submit-btn:hover { background: #243460; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,39,68,0.35); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .submit-note {
+    font-size: 13px; color: var(--gray-400); margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* Success screen */
+  .success-screen { text-align: center; padding: 40px 20px; }
+  .success-icon { font-size: 56px; margin-bottom: 20px; }
+  .success-title {
+    font-family: 'Lora', serif; font-size: 26px;
+    color: var(--navy); margin-bottom: 14px;
+  }
+  .success-msg {
+    font-size: 15px; color: var(--gray-600); line-height: 1.8;
+    max-width: 480px; margin: 0 auto 24px;
+  }
+  .ref-box {
+    background: var(--green-light); border: 1.5px solid #86efac;
+    border-radius: 12px; padding: 20px 28px;
+    display: inline-block; margin-bottom: 20px;
+  }
+  .ref-num {
+    font-size: 20px; color: var(--green); font-weight: 600;
+    font-family: monospace; letter-spacing: 1px;
+  }
+  .copy-btn {
+    background: var(--green); color: white; border: none;
+    border-radius: 8px; padding: 6px 14px; font-size: 13px;
+    cursor: pointer; margin-left: 12px; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: #15803d; }
+  .next-steps {
+    background: white; border-radius: 12px; padding: 24px;
+    max-width: 480px; margin: 20px auto; text-align: left;
+    border: 1px solid var(--gray-200);
+  }
+  .next-steps h4 { font-size: 15px; color: var(--navy); margin-bottom: 12px; }
+  .next-steps ul { list-style: none; padding: 0; }
+  .next-steps li {
+    font-size: 14px; color: var(--gray-600); padding: 6px 0;
+    padding-left: 24px; position: relative; line-height: 1.6;
+  }
+  .next-steps li::before {
+    content: attr(data-step);
+    position: absolute; left: 0; color: var(--teal); font-weight: 600;
+  }
+  .print-btn {
+    background: white; color: var(--navy); border: 1.5px solid var(--gray-200);
+    border-radius: 10px; padding: 10px 24px; font-size: 14px;
+    cursor: pointer; margin-top: 16px; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .print-btn:hover { background: var(--gray-50); border-color: var(--navy); }
+
+  /* Closing */
+  .closing {
+    background: var(--navy); color: white;
+    border-radius: 16px; padding: 32px; margin-top: 32px;
+    text-align: center;
+  }
+  .closing-icon { font-size: 36px; margin-bottom: 12px; }
+  .closing h3 {
+    font-family: 'Lora', serif; font-size: 20px;
+    margin-bottom: 12px; color: #bfdbfe;
+  }
+  .closing p { font-size: 14.5px; line-height: 1.8; color: #cbd5e1; max-width: 480px; margin: 0 auto; }
+
+  /* Confidentiality bar */
+  .conf-bar {
+    background: white; border-radius: 12px; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; color: var(--gray-600); margin-top: 16px;
+    border: 1px solid var(--gray-200); flex-wrap: wrap; text-align: center;
+  }
+
+  /* Print styles */
+  @media print {
+    body { background: white !important; }
+    .header, .wave, .progress-bar, .empathy-box, .closing, .conf-bar,
+    .copy-btn, .print-btn, .header-links { display: none !important; }
+    .container { padding: 0; max-width: 100%; }
+    .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .success-screen { padding: 20px; }
+    .success-screen::before {
+      content: 'RDA Grievance Portal – AIIMS Bhopal | Submission Receipt';
+      display: block; font-family: 'Lora', serif; font-size: 18px;
+      color: var(--navy); font-weight: 600; margin-bottom: 20px;
+      padding-bottom: 12px; border-bottom: 2px solid var(--navy);
+    }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#grievanceForm">Skip to form</a>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="org-badge">
+      <span class="icon">🏥</span>
+      Resident Doctors' Association · AIIMS Bhopal
+    </div>
+    <h1>Grievance Portal<br><span>We're Here For You</span></h1>
+    <p class="header-tagline">
+      A safe, supportive space where your voice is heard, your concerns are taken seriously, and resolution is our shared goal.
+    </p>
+    <div class="header-assurance">
+      <div class="assurance-chip"><span class="icon">🔒</span> Confidential</div>
+      <div class="assurance-chip"><span class="icon">⏱</span> 48-hr Acknowledgment</div>
+      <div class="assurance-chip"><span class="icon">🤝</span> Peer-led Support</div>
+    </div>
+    <div class="header-links">
+      <a href="track.html">Track Your Grievance</a>
+    </div>
+  </div>
+</div>
+
+<!-- WAVE -->
+<div class="wave">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="40">
+    <path d="M0,40 C360,0 1080,0 1440,40 L1440,0 L0,0 Z" fill="#1a2744"/>
+  </svg>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- Empathy note -->
+  <div class="empathy-box">
+    <p>
+      <strong>You are not alone.</strong> Raising a grievance takes courage, and we honour that. This portal exists because your RDA believes that every resident deserves to work and learn in an environment of dignity, fairness, and respect. Whatever brought you here — please know that your concern is valid, and we will do everything within our reach to help.
+    </p>
+  </div>
+
+  <form id="grievanceForm" action="https://formspree.io/f/xgolnjza" method="POST" novalidate>
+  <input type="hidden" name="_subject" id="emailSubject" value="">
+  <input type="hidden" name="_replyto" id="replyToField" value="">
+  <input type="hidden" name="Reference Number" id="refNumField" value="">
+  <input type="hidden" name="_next" value="">
+  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+    <!-- SECTION 1 -->
+    <div class="section" data-section="1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <div class="section-title">About You</div>
+          <div class="section-subtitle">Help us know who we're speaking with — or stay anonymous if you prefer</div>
+        </div>
+      </div>
+
+      <label class="anon-card" for="anonymous">
+        <input type="checkbox" id="anonymous" name="Anonymous Submission" value="Yes" onchange="toggleAnon()">
+        <div class="anon-card-text">
+          <strong>🙈 I wish to remain anonymous</strong>
+          <span>Your identity will be kept strictly confidential. You can still receive updates via a reference number.</span>
+        </div>
+      </label>
+
+      <div id="personalFields">
+        <div class="field-row">
+          <div class="field-group">
+            <label for="fullName">Full Name <span class="required">*</span></label>
+            <input type="text" id="fullName" name="Full Name" placeholder="Dr. ___________" aria-required="true">
+            <span class="field-error" id="err-fullName">Please enter your full name</span>
+          </div>
+          <div class="field-group">
+            <label for="empCode">Employee Code <span class="optional">(optional)</span></label>
+            <input type="text" id="empCode" name="Employee Code" placeholder="e.g. AIIMS/JR/2024/___">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="dept">Department / Specialty <span class="required">*</span></label>
+            <input type="text" id="dept" name="Department" placeholder="e.g. Anaesthesiology" aria-required="true">
+            <span class="field-error" id="err-dept">Please enter your department</span>
+          </div>
+          <div class="field-group">
+            <label for="year">Year of Residency <span class="required">*</span></label>
+            <select id="year" name="Year of Residency" aria-required="true">
+              <option value="">Select year...</option>
+              <option>JR1 – First Year</option>
+              <option>JR2 – Second Year</option>
+              <option>JR3 – Third Year</option>
+              <option>SR – Senior Resident</option>
+            </select>
+            <span class="field-error" id="err-year">Please select your year</span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="phone">Contact Number <span class="required">*</span></label>
+            <input type="tel" id="phone" name="Contact Number" placeholder="+91 98765 43210" inputmode="numeric" aria-required="true">
+            <span class="field-error" id="err-phone">Please enter your contact number</span>
+          </div>
+          <div class="field-group">
+            <label for="email">Official Email ID <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@aiimsbhopal.edu.in" aria-required="true"
+              oninput="document.getElementById('replyToField').value=this.value">
+            <span class="field-error" id="err-email">Please enter a valid email address</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="hostel">Hostel / Accommodation Details <span class="optional">(if relevant)</span></label>
+          <input type="text" id="hostel" name="Hostel / Accommodation" placeholder="Block & Room number, if applicable">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section" data-section="2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <div class="section-title">What's on your mind?</div>
+          <div class="section-subtitle">Select all categories that apply to your situation</div>
+        </div>
+      </div>
+
+      <div class="category-group" role="group" aria-label="Academic Issues">
+        <div class="category-label">📚 Academic Issues</div>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="Category" value="Academic leave denial"> Academic leave denial</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Thesis / Research related"> Thesis / Research related issues</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Duty hours / Posting concerns"> Duty hours / Posting concerns</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Unfair evaluation"> Unfair evaluation or assessment</label>
+        </div>
+      </div>
+
+      <div class="category-group" role="group" aria-label="Administrative Issues">
+        <div class="category-label">🏛 Administrative Issues</div>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="Category" value="Salary / Stipend delay"> Salary / Stipend delay</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Bond / Service matters"> Bond / Service matters</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Documentation / HR related"> Documentation / HR related</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Biometric / Attendance issues"> Biometric / Attendance issues</label>
+        </div>
+      </div>
+
+      <div class="category-group" role="group" aria-label="Workplace Environment">
+        <div class="category-label">🏥 Workplace Environment</div>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="Category" value="Excessive duty hours"> Excessive duty hours</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Manpower shortage"> Manpower shortage</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Safety concerns"> Safety concerns</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Violence against doctors"> Violence against doctors</label>
+        </div>
+      </div>
+
+      <div class="category-group" role="group" aria-label="Harassment / Misconduct">
+        <div class="category-label">⚠️ Harassment / Misconduct</div>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="Category" value="Workplace harassment"> Workplace harassment</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Bullying / Intimidation"> Bullying / Intimidation</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Discrimination"> Discrimination</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Gender-related grievance"> Gender-related grievance</label>
+        </div>
+      </div>
+
+      <div class="category-group" role="group" aria-label="Hostel & Facilities">
+        <div class="category-label">🏠 Hostel & Facilities</div>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="Category" value="Accommodation issue"> Accommodation issue</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Mess issue"> Mess issue</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Water / Electricity"> Water / Electricity</label>
+          <label class="check-item"><input type="checkbox" name="Category" value="Security concerns"> Security concerns</label>
+        </div>
+      </div>
+
+      <div class="category-group">
+        <div class="category-label">📝 Other</div>
+        <div class="field-group">
+          <input type="text" name="Category - Other" placeholder="Please specify your concern here...">
+        </div>
+      </div>
+
+      <span class="field-error" id="err-category">Please select at least one category or specify under "Other"</span>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section" data-section="3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <div class="section-title">Tell us what happened</div>
+          <div class="section-subtitle">The more context you share, the better we can support you</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label for="incDate">Date(s) of Incident <span class="required">*</span></label>
+          <input type="date" id="incDate" name="Date of Incident" aria-required="true">
+          <span class="field-error" id="err-incDate">Please enter the incident date</span>
+        </div>
+        <div class="field-group">
+          <label for="incLocation">Location / Department</label>
+          <input type="text" id="incLocation" name="Location" placeholder="e.g. OT complex, Ward 5, Hostel B">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="persons">Persons Involved <span class="optional">(if applicable — handled confidentially)</span></label>
+        <input type="text" id="persons" name="Persons Involved" placeholder="Role/designation only if you're not comfortable sharing names">
+      </div>
+
+      <div class="field-group">
+        <label for="description">What happened? Please describe in detail <span class="required">*</span></label>
+        <textarea id="description" name="Detailed Description" rows="8" maxlength="3000" aria-required="true"
+          placeholder="Please share what you experienced. The more detail you provide — including dates, events, what was said or done, and how it affected you — the better we can help you. There is no wrong way to tell your story."
+          oninput="updateCounter(this, 'descCounter')"></textarea>
+        <div class="char-counter" id="descCounter">0 / 3000</div>
+        <span class="field-error" id="err-description">Please describe the incident (at least 50 characters)</span>
+      </div>
+
+      <div class="field-group">
+        <label>Supporting Documents <span class="optional">(optional)</span></label>
+        <div class="doc-info-box">
+          <div class="doc-icon">📎</div>
+          <div class="doc-text">
+            To share documents, screenshots, or images as evidence,<br>
+            please email them separately with your reference number to:
+          </div>
+          <div class="doc-email">rdaaiimsb@gmail.com</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section" data-section="4">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <div class="section-title">How urgent is this for you?</div>
+          <div class="section-subtitle">We'll prioritise your case accordingly</div>
+        </div>
+      </div>
+
+      <div class="urgency-options" role="radiogroup" aria-label="Urgency level">
+        <div class="urgency-card" tabindex="0" onclick="selectUrgency(this, 'immediate')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectUrgency(this,'immediate')}">
+          <input type="radio" name="Urgency Level" value="Immediate – within 24 hours">
+          <div class="urgency-icon">🔴</div>
+          <div class="urgency-title">Immediate</div>
+          <div class="urgency-time">Within 24 hours</div>
+        </div>
+        <div class="urgency-card" tabindex="0" onclick="selectUrgency(this, 'high')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectUrgency(this,'high')}">
+          <input type="radio" name="Urgency Level" value="High Priority – within 3 days">
+          <div class="urgency-icon">🟡</div>
+          <div class="urgency-title">High Priority</div>
+          <div class="urgency-time">Within 3 days</div>
+        </div>
+        <div class="urgency-card" tabindex="0" onclick="selectUrgency(this, 'routine')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectUrgency(this,'routine')}">
+          <input type="radio" name="Urgency Level" value="Routine – within 7-14 days">
+          <div class="urgency-icon">🟢</div>
+          <div class="urgency-title">Routine</div>
+          <div class="urgency-time">Within 7–14 days</div>
+        </div>
+      </div>
+      <span class="field-error" id="err-urgency">Please select an urgency level</span>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section" data-section="5">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <div class="section-title">What resolution are you hoping for?</div>
+          <div class="section-subtitle">Tell us what would make things right for you</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <textarea name="Desired Resolution" rows="4" maxlength="1500"
+          placeholder="For example: a formal apology, salary clearance, change in posting schedule, a meeting with the HOD, investigation into the matter, etc. There's no request too big or too small."
+          oninput="updateCounter(this, 'resCounter')"></textarea>
+        <div class="char-counter" id="resCounter">0 / 1500</div>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section" data-section="6">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div>
+          <div class="section-title">Have you tried raising this before?</div>
+          <div class="section-subtitle">This helps us understand the history and act appropriately</div>
+        </div>
+      </div>
+      <div class="check-grid" role="group" aria-label="Prior escalation">
+        <label class="check-item"><input type="checkbox" name="Prior Escalation" value="Discussed with HOD"> Discussed with HOD</label>
+        <label class="check-item"><input type="checkbox" name="Prior Escalation" value="Informed Faculty"> Informed Faculty</label>
+        <label class="check-item"><input type="checkbox" name="Prior Escalation" value="Reported to Administration"> Reported to Administration</label>
+        <label class="check-item"><input type="checkbox" name="Prior Escalation" value="First time raising this"> This is the first time I'm raising this</label>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section" data-section="7">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div>
+          <div class="section-title">Declaration</div>
+          <div class="section-subtitle">A simple confirmation before you submit</div>
+        </div>
+      </div>
+
+      <div class="decl-box">
+        <p>"I confirm that the information I have shared above is accurate to the best of my knowledge. I understand that this portal is a peer-led platform designed to support residents, and I am submitting this in good faith."</p>
+      </div>
+
+      <div class="decl-check">
+        <input type="checkbox" id="declaration" name="Declaration Agreed" value="Yes" required>
+        <label for="declaration">I agree to the above declaration</label>
+      </div>
+      <span class="field-error" id="err-declaration">You must agree to the declaration before submitting</span>
+
+      <div class="field-row" style="margin-top:20px;">
+        <div class="field-group">
+          <label for="subDate">Date of Submission</label>
+          <input type="date" id="subDate" name="Date of Submission">
+        </div>
+        <div class="field-group"></div>
+      </div>
+
+      <div class="submit-wrap" style="margin-top:24px;">
+        <button type="submit" class="submit-btn" id="submitBtn">Submit My Grievance →</button>
+        <p class="submit-note">🔒 Your submission is encrypted and securely handled by the RDA.<br>
+        You will receive an acknowledgment within 48 hours.</p>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- Closing card -->
+  <div class="closing" id="closingCard">
+    <div class="closing-icon">🤝</div>
+    <h3>Thank you for trusting your RDA</h3>
+    <p>
+      We know it takes courage to speak up. We are fellow residents — we understand the pressures you face every day. Your submission matters to us, and we stand firmly beside you. You are not alone in this.
+    </p>
+  </div>
+
+  <div class="conf-bar">
+    🔒 All submissions are handled with strict confidentiality · RDA, AIIMS Bhopal · For urgent matters, reach your RDA representative directly
+  </div>
+
+</div>
+
+<script>
+  // Set today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('subDate').value = today;
+
+  // --- Progress Bar ---
+  const sections = document.querySelectorAll('.section[data-section]');
+  const progressFill = document.getElementById('progressFill');
+
+  const observer = new IntersectionObserver((entries) => {
+    let maxVisible = 0;
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const num = parseInt(entry.target.dataset.section);
+        if (num > maxVisible) maxVisible = num;
+      }
+    });
+    if (maxVisible > 0) {
+      progressFill.style.width = ((maxVisible / 7) * 100) + '%';
+    }
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // --- Character Counter ---
+  function updateCounter(textarea, counterId) {
+    const counter = document.getElementById(counterId);
+    const len = textarea.value.length;
+    const max = parseInt(textarea.maxLength);
+    counter.textContent = len + ' / ' + max;
+    counter.className = 'char-counter' +
+      (len > max * 0.9 ? ' limit' : len > max * 0.75 ? ' warn' : '');
+  }
+
+  // --- Anonymous Toggle ---
+  function toggleAnon() {
+    const checked = document.getElementById('anonymous').checked;
+    const fields = document.getElementById('personalFields');
+    fields.style.opacity = checked ? '0.35' : '1';
+    fields.style.pointerEvents = checked ? 'none' : 'auto';
+    if (checked) {
+      fields.querySelectorAll('input, select').forEach(i => {
+        i.value = '';
+        i.required = false;
+      });
+      document.getElementById('replyToField').value = '';
+    }
+    // Clear any validation errors on personal fields when going anonymous
+    ['fullName','dept','year','phone','email'].forEach(id => clearError(id));
+  }
+
+  // --- Urgency Selection ---
+  function selectUrgency(card, type) {
+    document.querySelectorAll('.urgency-card').forEach(c => {
+      c.classList.remove('selected-immediate','selected-high','selected-routine');
+    });
+    card.classList.add('selected-' + type);
+    card.querySelector('input[type="radio"]').checked = true;
+    clearError('urgency');
+  }
+
+  // --- Validation ---
+  function showError(fieldId, errId) {
+    const field = document.getElementById(fieldId);
+    const err = document.getElementById(errId || ('err-' + fieldId));
+    if (field) field.classList.add('input-error');
+    if (err) err.classList.add('visible');
+  }
+
+  function clearError(fieldId) {
+    const field = document.getElementById(fieldId);
+    const err = document.getElementById('err-' + fieldId);
+    if (field) field.classList.remove('input-error');
+    if (err) err.classList.remove('visible');
+  }
+
+  // Clear errors on input
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => {
+      el.classList.remove('input-error');
+      const err = el.closest('.field-group')?.querySelector('.field-error');
+      if (err) err.classList.remove('visible');
+    });
+  });
+
+  function validateForm() {
+    let valid = true;
+    let firstError = null;
+    const isAnon = document.getElementById('anonymous').checked;
+
+    // Clear all errors first
+    document.querySelectorAll('.field-error').forEach(e => e.classList.remove('visible'));
+    document.querySelectorAll('.input-error').forEach(e => e.classList.remove('input-error'));
+
+    // Personal fields (only if not anonymous)
+    if (!isAnon) {
+      const checks = [
+        { id: 'fullName', test: v => v.trim().length > 0 },
+        { id: 'dept', test: v => v.trim().length > 0 },
+        { id: 'year', test: v => v !== '' },
+        { id: 'phone', test: v => v.trim().length >= 10 },
+        { id: 'email', test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+      ];
+      checks.forEach(({ id, test }) => {
+        const el = document.getElementById(id);
+        if (!test(el.value)) {
+          showError(id);
+          valid = false;
+          if (!firstError) firstError = el;
+        }
+      });
+    }
+
+    // Category (at least one checked or "other" filled)
+    const catChecked = document.querySelectorAll('input[name="Category"]:checked').length > 0;
+    const catOther = document.querySelector('input[name="Category - Other"]').value.trim().length > 0;
+    if (!catChecked && !catOther) {
+      document.getElementById('err-category').classList.add('visible');
+      valid = false;
+      if (!firstError) firstError = document.querySelector('.section[data-section="2"]');
+    }
+
+    // Incident date
+    const incDate = document.getElementById('incDate');
+    if (!incDate.value) {
+      showError('incDate');
+      valid = false;
+      if (!firstError) firstError = incDate;
+    }
+
+    // Description (min 50 chars)
+    const desc = document.getElementById('description');
+    if (desc.value.trim().length < 50) {
+      showError('description');
+      valid = false;
+      if (!firstError) firstError = desc;
+    }
+
+    // Urgency
+    const urgencySelected = document.querySelector('input[name="Urgency Level"]:checked');
+    if (!urgencySelected) {
+      document.getElementById('err-urgency').classList.add('visible');
+      valid = false;
+      if (!firstError) firstError = document.querySelector('.section[data-section="4"]');
+    }
+
+    // Declaration
+    if (!document.getElementById('declaration').checked) {
+      document.getElementById('err-declaration').classList.add('visible');
+      valid = false;
+      if (!firstError) firstError = document.getElementById('declaration');
+    }
+
+    if (firstError) {
+      firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    return valid;
+  }
+
+  // --- Generate Reference Number ---
+  function generateRefNum() {
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    const rand = String(Math.floor(10 + Math.random() * 90));
+    return `RDA-${yy}${mm}-${dd}${hh}${mi}${rand}`;
+  }
+
+  // --- Build Dynamic Subject ---
+  function buildSubject(refNum) {
+    const categories = [...document.querySelectorAll('input[name="Category"]:checked')]
+      .map(cb => cb.value);
+    const otherCat = document.querySelector('input[name="Category - Other"]').value.trim();
+    if (otherCat) categories.push(otherCat);
+
+    const primaryCategory = categories[0] || 'General';
+    const urgencyEl = document.querySelector('input[name="Urgency Level"]:checked');
+    const urgency = urgencyEl ? urgencyEl.value.split('–')[0].trim().toUpperCase() : 'ROUTINE';
+
+    return `[${refNum}] [${urgency}] ${primaryCategory} – RDA Grievance`;
+  }
+
+  // --- Save to localStorage ---
+  function saveSubmission(refNum) {
+    const categories = [...document.querySelectorAll('input[name="Category"]:checked')]
+      .map(cb => cb.value);
+    const urgencyEl = document.querySelector('input[name="Urgency Level"]:checked');
+
+    const submission = {
+      refNum,
+      date: new Date().toISOString(),
+      categories,
+      urgency: urgencyEl ? urgencyEl.value : 'Not specified',
+      email: document.getElementById('email').value || 'Anonymous',
+      name: document.getElementById('fullName').value || 'Anonymous',
+      anonymous: document.getElementById('anonymous').checked
+    };
+
+    try {
+      const existing = JSON.parse(localStorage.getItem('rda_submissions') || '[]');
+      existing.push(submission);
+      localStorage.setItem('rda_submissions', JSON.stringify(existing));
+    } catch (e) { /* localStorage unavailable */ }
+  }
+
+  // --- Copy Reference Number ---
+  function copyRefNum(refNum) {
+    navigator.clipboard.writeText(refNum).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    });
+  }
+
+  // --- Form Submit Handler ---
+  document.getElementById('grievanceForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    const form = this;
+    const refNum = generateRefNum();
+
+    // Set dynamic fields
+    document.getElementById('refNumField').value = refNum;
+    document.getElementById('emailSubject').value = buildSubject(refNum);
+
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch('https://formspree.io/f/xgolnjza', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        saveSubmission(refNum);
+
+        const email = document.getElementById('email').value;
+        const urgencyEl = document.querySelector('input[name="Urgency Level"]:checked');
+        const urgencyText = urgencyEl ? urgencyEl.value : '';
+
+        let timelineText = '7–14 days';
+        if (urgencyText.includes('Immediate')) timelineText = '24 hours';
+        else if (urgencyText.includes('High')) timelineText = '3 days';
+
+        const emailNote = email
+          ? `<p style="font-size:14px;color:var(--gray-600);margin-top:8px;">Responses will be sent to <strong>${email}</strong></p>`
+          : '';
+
+        form.innerHTML = `
+          <div class="success-screen">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">Grievance Received</h2>
+            <p class="success-msg">
+              Thank you for reaching out. Your submission has been securely sent to the RDA.
+              The team will acknowledge your grievance within <strong>${timelineText}</strong>.
+            </p>
+
+            <div class="ref-box">
+              <span class="ref-num" id="refDisplay">${refNum}</span>
+              <button class="copy-btn" id="copyBtn" onclick="copyRefNum('${refNum}')">Copy</button>
+            </div>
+            ${emailNote}
+
+            <div class="next-steps">
+              <h4>What happens next?</h4>
+              <ul>
+                <li data-step="1.">Your grievance has been assigned reference <strong>${refNum}</strong></li>
+                <li data-step="2.">The RDA committee will review your submission within ${timelineText}</li>
+                <li data-step="3.">${email ? 'You will receive updates at your email address' : 'Use your reference number to follow up with the RDA'}</li>
+                <li data-step="4.">For supporting documents, email them to <strong>rdaaiimsb@gmail.com</strong> with your reference number</li>
+              </ul>
+            </div>
+
+            <button class="print-btn" onclick="window.print()">🖨 Print / Save Receipt</button>
+            <p style="font-size:13px;color:var(--gray-400);margin-top:12px;">
+              <a href="track.html" style="color:var(--blue);text-decoration:none;">Track your grievance</a> ·
+              For urgent matters, contact your RDA representative directly
+            </p>
+          </div>
+        `;
+      } else {
+        btn.textContent = 'Submit My Grievance →';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again or contact the RDA directly at rdaaiimsb@gmail.com');
+      }
+    } catch (err) {
+      btn.textContent = 'Submit My Grievance →';
+      btn.disabled = false;
+      alert('Network error. Please check your connection and try again.');
+    }
+  });
+</script>
+</body>
+</html>
