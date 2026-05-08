@@ -669,7 +669,6 @@
     <div class="nav-tabs">
       <a class="nav-tab active" href="#submit" onclick="showPage('submit')">Submit Grievance</a>
       <a class="nav-tab" href="#track" onclick="showPage('track')">Track Status</a>
-      <a class="nav-tab" href="#announcements" onclick="showPage('announcements')">📣 Announcements</a>
     </div>
   </div>
 </div>
@@ -1035,52 +1034,6 @@
   </div>
 </div>
 
-<!-- ==================== PAGE: ANNOUNCEMENTS ==================== -->
-<div id="page-announcements" class="page-view">
-  <div class="container">
-
-    <div class="section" style="padding:0;overflow:hidden;">
-      <div style="background:linear-gradient(135deg,#0d9488 0%,#2563eb 100%);color:white;padding:24px 32px;">
-        <div style="font-size:13px;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:6px;">📣 RDA Announcement</div>
-        <h2 style="font-family:'Lora',serif;font-size:26px;font-weight:600;line-height:1.3;">Sunburn Beats 1.0 — First Time Ever! 🎶</h2>
-      </div>
-
-      <div style="padding:28px 32px;">
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
-          <div style="background:var(--blue-light);color:var(--navy);border-radius:8px;padding:8px 14px;font-size:13.5px;font-weight:500;">📅 9 May 2026</div>
-          <div style="background:var(--teal-light);color:var(--teal);border-radius:8px;padding:8px 14px;font-size:13.5px;font-weight:500;">📍 TGI Insignia, Hoshangabad Road, Bhopal</div>
-          <div style="background:#fef3c7;color:#92400e;border-radius:8px;padding:8px 14px;font-size:13.5px;font-weight:500;">🎟 RDA Members Only</div>
-        </div>
-
-        <img src="assets/sunburn-beats-1.0.jpg" alt="Sunburn Beats 1.0 — RDA AIIMS Bhopal poster" loading="lazy"
-          style="display:block;width:100%;max-width:520px;margin:0 auto 24px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.12);">
-
-        <div style="font-family:'Lora',serif;font-size:16px;line-height:1.8;color:var(--gray-800);margin-bottom:20px;">
-          <p style="margin-bottom:14px;">RDA AIIMS Bhopal is excited to announce that we are organizing <strong>Sunburn Beats</strong> for the very first time!</p>
-          <p style="margin-bottom:14px;">All resident doctors who are RDA members are warmly invited to join this event.</p>
-          <p style="font-style:italic;color:var(--teal);">Come and enjoy the vibe! ✨</p>
-        </div>
-
-        <div style="background:white;border-left:4px solid var(--amber);border-radius:12px;padding:20px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:20px;">
-          <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--amber);margin-bottom:12px;">📌 Entry Details</div>
-          <ul style="list-style:none;padding:0;font-size:14.5px;line-height:1.9;color:var(--gray-800);">
-            <li style="padding-left:24px;position:relative;"><span style="position:absolute;left:0;">✅</span> Entry is through a <strong>mandatory pass</strong></li>
-            <li style="padding-left:24px;position:relative;"><span style="position:absolute;left:0;">📍</span> Pass collection from <strong>Visitors Room, Swami Vivekananda Hostel</strong></li>
-            <li style="padding-left:24px;position:relative;"><span style="position:absolute;left:0;">⏱</span> Timing: <strong>9:30 PM – 10:30 PM (Today)</strong></li>
-          </ul>
-        </div>
-
-        <div style="text-align:center;font-family:'Lora',serif;font-style:italic;font-size:17px;color:var(--navy);margin-top:8px;">Don't miss it! 🌴</div>
-      </div>
-    </div>
-
-    <div class="conf-bar">
-      🏥 Posted by RDA, AIIMS Bhopal · For queries, reach your RDA representative directly
-    </div>
-
-  </div>
-</div>
-
 <!-- ==================== ADMIN LOGIN OVERLAY ==================== -->
 <div class="admin-login-overlay" id="adminLoginOverlay">
   <div class="login-card">
@@ -1319,12 +1272,12 @@
   // Hash routing
   window.addEventListener('hashchange', () => {
     const hash = location.hash.slice(1) || 'submit';
-    if (['submit','track','admin','announcements'].includes(hash)) showPage(hash);
+    if (['submit','track','admin'].includes(hash)) showPage(hash);
   });
 
   // Init
   const initHash = location.hash.slice(1) || 'submit';
-  if (['submit','track','admin','announcements'].includes(initHash)) showPage(initHash);
+  if (['submit','track','admin'].includes(initHash)) showPage(initHash);
 
   // ==================== SUBMIT PAGE JS ====================
 
